@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<!-- HTML file produced from file: errata.tex --
+ -- using Hyperlatex v 2.3.1 (c) Otfried Cheong--
+ -- on Emacs 19.34.1, Wed Sep 29 15:11:54 1999 -->
+<HEAD>
+<TITLE>R5RS Errata</TITLE>
+
+</HEAD><BODY BGCOLOR="#ffffff">
+
+<BLOCKQUOTE><CENTER>
+<FONT SIZE=+1>R<I><sup>5</sup></I>RS Errata</FONT> <BR>Richard Kelsey <BR>September 29, 1999
+</CENTER></BLOCKQUOTE>
+<P>Several inconsistencies in R<I><sup>5</sup></I>RS have been pointed out
+since its initial publication.  This document
+addresses the most important of them.
+<H2><A NAME="1">Semantics of <TT>call-with-current-continuation</TT></A></H2>
+<P>The definition of <TT>call-with-current-continuation</TT> in
+section&nbsp;7.2 is incorrect because
+it is incompatible with <TT>dynamic-wind</TT>.  As shown in
+section&nbsp;4 of [1], however, this incorrect
+semantics is adequate to define the <TT>shift</TT> and <TT>reset</TT>
+operators, which can then be used to define the correct
+semantics of both <TT>dynamic-wind</TT> and <TT>call-with-current-continuation</TT>.
+<H2><A NAME="2">Redefinition of keywords</A></H2>
+<P>As stated in section&nbsp;1.2 keywords are not reserved.
+The grammar specified in section&nbsp;7.1 is thus somewhat
+misleading because a program may redefine any or all syntactic
+keywords.  In particular, it is possible to use any identifier
+as a variable.
+<H2><A NAME="3"><TT>Port?</TT></A></H2>
+<P>Section&nbsp;3.2 includes <TT>port?</TT> in the list of
+predicates defining disjoint types; there is no such procedure.
+<TT>Input-port?</TT> and <TT>output-port?</TT> should be included in
+this list of predicates.  An object may satisfy both <TT>input-port?</TT>
+and <TT>output-port?</TT>, but cannot satisfy any other pair of predicates
+in this list.
+<H2><A NAME="4"><TT>Begin</TT> at top level</A></H2>
+<P>As with <TT>define</TT>, there are two different semantics for <TT>begin</TT>
+ depending on context.
+When used as an expression a <TT>begin</TT> form contains expressions and is
+ library syntax as described in section&nbsp;4.2.3.
+At top level a <TT>begin</TT> form contains commands and definitions and its
+ semantics are as described in section&nbsp;5.1:
+ a top-level <TT>begin</TT> is equivalent to the sequence of commands and
+ definitions it contains.
+A top-level <TT>begin</TT> is syntax, not library syntax.
+<P>A <TT>begin</TT> at top level that contains only expressions is syntactically
+ ambiguous, but the two semantics are equivalent in that particular case.
+<H2><A NAME="5"><TT>List-ref</TT></A></H2>
+<P>The description of <TT>(list-ref</TT> <EM>list k</EM><TT>)</TT> in section&nbsp;3.2.2
+ should say
+<BLOCKQUOTE>
+It is an error if <EM>list</EM> has <EM>k</EM> or fewer elements.
+</BLOCKQUOTE>
+and not
+<BLOCKQUOTE>
+It is an error if <EM>list</EM> has fewer than <EM>k</EM> elements.
+</BLOCKQUOTE>
+<H2><A NAME="6">Reference</A></H2>
+<TABLE CELLSPACING="1" CELLPADDING="0"><TR>
+<TD NOWRAP COLSPAN="1" ALIGN="LEFT">
+[1] </TD><TD NOWRAP COLSPAN="99" ALIGN="LEFT"> Andrzej Filinski. Representing Monads.
+ In <EM>Proceedings of the 1994 ACM</EM> </TD></TR>
+<TR>
+<TD NOWRAP COLSPAN="1" ALIGN="LEFT"></TD><TD NOWRAP COLSPAN="99" ALIGN="LEFT"> <EM>SIGPLAN-SIGACT Symposium on Principles of Programming Languages</EM>, </TD></TR>
+<TR>
+<TD NOWRAP COLSPAN="1" ALIGN="LEFT"></TD><TD NOWRAP COLSPAN="99" ALIGN="LEFT"> pages&nbsp;446-457.
+</TD></TR></TABLE>
+
+<HR >
+</BODY></HTML>
