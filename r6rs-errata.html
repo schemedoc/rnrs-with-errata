@@ -1,0 +1,668 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html40/loose.dtd">
+<html>
+  <head>
+    <base href="http://www.r6rs.org/">
+    <link type="text/css" rel="stylesheet" href="/r6rs.css">
+    <style>
+      body { width:7in }
+      dt {
+      border-top: 1px solid #000;
+      position: relative;
+      left: 0;
+      top: 1.1em;
+      width: 8em;
+      font-weight: bold;
+      }
+      
+      dd {
+      margin: 0 0 0 8em;
+      padding: 0 0 0 .5em;
+      }
+    </style>
+    <title>R6RS Errata</title>
+  </head>
+  <body>
+    <h1>R6RS Errata</h1>
+    
+    <h2>Revised<sup>6</sup> Report on the Algorithmic Language Scheme</h2>
+    <dl>
+      <dt>&sect; 1.13</dt>
+      <dd>The example code is missing a call to
+      <code>close-port</code>, and should be:
+	<pre>#!r6rs
+(import (rnrs base)
+        (rnrs io ports)
+        (rnrs programs))
+(let ((p (standard-output-port)))
+  (put-bytevector p
+                  (call-with-port
+                      (open-file-input-port
+                        (cadr (command-line)))
+                    get-bytevector-all))
+  (close-port p))</pre>
+      </dd>
+      <dt>&sect; 4</dt>
+      <dd>The term "read syntax" mentioned in the introduction of the
+      chapter should be "datum syntax".</dd>
+      <dt>&sect; 4.1</dt>
+      <dd>The sentence:
+	<p>
+	  "Some non-terminal names refer to the Unicode scalar values of the same
+	  name: &lt;character tabulation&gt; (U+0009), &lt;linefeed&gt;
+	  (U+000A), &lt;carriage return&gt; (U+000D), &lt;line
+	  tabulation&gt; (U+000B), &lt;form feed&gt; (U+000C),
+	  &lt;carriage return&gt; (U+000D), &lt;space&gt; (U+0020),
+	  &lt;next line&gt; (U+0085), &lt;line separator&gt; (U+2028),
+	  and &lt;paragraph separator&gt; (U+2029)."</p>
+	contains a duplicate "&lt;carriage return&gt; (U+000D)", which
+	should be elided.
+      </dd>
+      <dt>&sect; 4.2.1</dt>
+      <dd>The rule
+	<p>&lt;decimal 10&gt -&gt; &lt;digit 10&gt;+ . &lt;suffix&gt;</p>
+	is redundant.
+      </dd>
+      <dd>In the production for &lt;string element&gt;,
+      the two occurrences of &lt;intraline whitespace&gt; should have a
+	* after them.</dd>
+
+      <dt>&sect; 4.2.1, &sect; 4.2.8</dt>
+      <dd>The rules for &lt;number&gt; suggest that the lexical syntax
+	for the external representations of number objects is case-sensitive,
+	with a number of specific exceptions, while the first
+	apragraph of &sect; 4.2.8 claims that case is not significant
+	in external representations of number objects.  This should be
+	resolved by making case generally insignificant in the
+	external representation of number objects.
+      </dd>
+      <dt>&sect; 4.2.6</dt>
+      <dd>The sentence <p>"Case is significant in #\&lt;character&gt;, and in
+	    #\&lt;character name&gt;, but not in #\x&lt;hex scalar
+	    #value&gt;." is worded confusingly.</p>  It should be
+	<p>"Case is significant in #\&lt;character&gt;, and in
+	    #\&lt;character name&gt;, but not the in the &lt;hex scalar
+	    #value&gt; part of #\x&lt;hex scalar #value&gt;."
+      </dd>
+      <dt>&sect; 4.2.8<dt>
+      <dd>The following sentence should be added: <p>"The
+      <code>-nan.0</code> literal also represents a NaN."</p></dd>
+      <dt>&sect: 5.10<dt>
+	<dd>The sentence 
+	<p>"An object fetched from a location, by a variable reference or by
+	  a procedure such as <code>car</code>,
+	  <code>vector-ref</code>, or <code>string-ref</code>, is
+	  equivalent in the sense of <code>eqv?</code>
+	  (section 11.5)
+	  to the object last stored in the location before the
+	  fetch."</p>
+	<p>should be amended by:</p>
+	<p>", except
+	  when that object is a procedure.  When the object is a procedure, the
+	  object fetched from the location will also be a procedure that behaves
+	  identically to the procedure last stored in the location, but it is
+	  possible that it is not the same object."
+	  </p>
+	</dd>
+      <dt>&sect; 7.3</dt>
+      <dd>The <code>(stack)</code> example library is missing an
+	import of <code>(rnrs mutable-pairs)</code>.</dd>
+      <dt>&sect; 11.3</dt>
+      <dd>The description of the procedures is out of order and should
+	be:
+	<p>"equal, monotonically increasing, monotonically nondecreasing,
+monotonically decreasing, or monotonically nonincreasing"
+	</p>
+      </dd>
+      <dd>There is an occurrence of the name <code>fl&lt;</code> which
+	should be <code>fl&lt;?</code></dd>
+      <dt>&sect; 11.4.5</dt>
+      <dd>The first example for <code>case</code> is slightly
+	confusing, as it suggests that 1 is a composite number: It
+	should be elided from the second branch of the <code>case</code>.</dd>
+      <dt>&sect; 11.5</dt>
+      <dd>In the definition of the behavior of <code>eqv?</code> on
+	inexact numbers - both <code>#t</code> and <code>#f</code>
+	cases - the phrase
+	<p>"	[...] as a finite composition of Scheme's standard arithmetic
+	  procedures."</p>
+	<p>should be augmented by:</p>
+	<p>", as long as the evaluation of that application does not
+	  involve NaN."</p>
+	</dd>
+      <dd>The following sentence should be elided:
+	<p>"Furthermore, a constant may be copied at any time by the implementation so
+	  as to exist simultaneously in different sets of locations, as noted in
+	  section 11.4.1."
+	</p>
+      </dd>
+      <dd>The following example for <code>eq?</code>
+	<pre>(eq? car car) =&gt; #t</pre>
+	should be replaced by
+	<pre>(eq? car car) =&gt; <i>unspecified</i></pre>
+      </dd>
+      <dt>&sect; 11.6</dt>
+      <dd>In the entry for <code>list-ref</code>,
+	"<code>list-tail</code>" should be replaced by "<code>list-ref</code>".</dd>
+      <dt>&sect; 11.7.4</dt>
+      <dd>The two examples for <code>&lt;</code> and <code>&gt;</code>
+      on infinities have extra parentheses.</dd>
+      <dd>The examples for <code>min</code> and <code>max</code>
+	involving infinities should be prefixed by:
+	<p>"For any real number object <var>x</var> <em>that is not a
+	NaN</em>:"</p>
+      <dd>The entries for <code>inexact</code>, <code>exact</code>,
+	<code>min</code>, and <code>max</code> mention a condition
+	type <code>&amp;implementation-violation</code>, which should
+	be <code>&amp;implementation-restriction</code>.
+      <dd>The entry for <code>rationalize</code> says "returns a the a
+	number object": the "the" should be elided.</dd>
+      <dd>The respectively second templates for <code>/</code> and
+	<code>-</code> should have parameter lists
+	<var>z<sub>1</sub></var> <var>z<sub>2</sub></var>
+	<var>z<sub>3</sub></var> ... respectively.</dd>
+      <dd>The example:
+	<pre>(imag-part 1.1+2.2i) =&gt;  2.2i ; approximately</pre>
+	should be replaced by:
+	<pre>(imag-part 1.1+2.2i) =&gt;  2.2 ; approximately</pre>
+      <dd>In the description of the <code>div</code>, <code>mod</code>
+      etc., the wording
+
+	<p>"In each case, <var>x<sub>1</sub></var> must be neither infinite nor a NaN,
+	and <var>x<sub>2</sub></var> must be nonzero; otherwise, an exception with
+	condition type <code>&amp;assertion</code> is raised."</p>
+
+	should be replaced by:
+
+	<p>"If <var>x<sub>1</sub></var> and <var>x<sub>2</sub></var>
+	are exact, <var>x<sub>2</sub></var> must be nonzero.  In the
+	cases where the mathematical requirements in section 11.7.3
+	cannot be satisfied by any number object, either an exception
+	is raised with condition type
+	<code>&amp;implementation-restriction</code>, or unspecified
+	number objects (one for for <code>div</code> <code>mod</code>,
+	<code>div0</code> and <code> mod0</code>, two for
+	<code>div-and-mod</code> and <code>div0-and-mod0</code>) are
+	returned."</p>
+      </dd>
+      <dd>The example
+	<pre>(expt 0 5+.0000312i)   =&gt;  0</pre>
+	should be replaced by:
+	<pre>(expt 0 5+.0000312i)   =&gt;  0.0</pre>
+      </dd>
+      <dd>The note for <code>string-&gt;number</code> should be replaced
+      by:
+	<p>
+	  "If the arguments to <code>string-&gt;number</code> are a
+	  string and a valid radix as specified, it must produce a
+	  number object or <code>#f</code> ; it may not raise an
+	  exception."
+	<p>
+	  (I.e., <code>string-&gt;number</code> may raise an exception
+	  if the argument is not a string.)
+	</p>
+	</dd>
+      <dt>&sect; 11.9<dt>
+      <dd>The <code>append</code> procedure can be
+      called with zero arguments.  Thus, in the description of
+      <code>append</code>, a template
+	<code>(append)</code> should be added.
+      <dd><p>The sentence at the end of the entry for <code>append</code>
+      should be clarified to:</p>
+	<p>"The return value is made from new pairs for all arguments but the
+	  last; the last is merely placed at the end of the new structure."</p>
+      </dd>
+
+      <dt>&sect; 11.17</dt>
+      <dd>Two of the examples involve calls to <code>sqrt</code> for
+      which Scheme implementations are allowed to return either exact
+      or inexact results, which makes the examples potentially
+      confusing.
+      <dt>&sect; 11.19</dt>
+      <dd>The last example in this section:
+	<pre>p =&gt; (15 5)</pre>
+	should be:
+	<pre>p =&gt; (15 . 5)</pre>
+      <dt>&sect; D</dt>
+      <dd>The example is missing the following line at the end:
+	<pre>(close-output-port (current-output-port))</pre>
+      </dd>
+    </dl>
+    
+    <h2>Standard Libraries</h2>
+    
+    <dl>
+      <dt>&sect; 1.2</dt>
+      <dd>In the description of <code>string-titlecase</code>, the
+      words "via <code>char-titlecase</code>" should be removed.
+	(I.e. <code>string-titlecase</code> should use the full
+	mapping, not just the scalar-value-to-scalar-value mapping.)
+      </dd>
+      <dd>The examples:
+<pre>(string-titlecase "r6rs") =&gt; "R6Rs"
+(string-titlecase "R6RS") &gt; "R6Rs"</pre>
+	should be replaced by:
+<pre>(string-titlecase "r6rs") =&gt; "R6rs"
+(string-titlecase "R6RS") &gt; "R6rs"</pre>
+      </dd>
+      <dt>&sect; 2.4</dt>
+      <dd>The sentence
+	<p>"The length of <var>bytevector</var> or,
+	  respectively, of <var>list</var> must be divisible by
+	  <var>size</var>."</p>
+	should be replaced by
+	<p> "The length of <var>bytevector</var> must be divisible by
+	  <var>size</var>."</p>
+      </dd>
+      <dt>&sect; 2.6</dt>
+      <dd>In the entry for <code>bytevector-s32-native-set!</code>,
+	the interval for <code>n</code> should be {-2<sup>31</sup>,
+	..., 2<sup>31</sup> - 1} instead of {-2<sup>31</sup>, ...,
+	2<sup>32</sup> - 1}.</dd>
+      <dt>&sect; 2.7</dt>
+      <dd>In the entry for <code>bytevector-s64-native-set!</code>,
+	the interval for <code>n</code> should be {-2<sup>63</sup>,
+	..., 2<sup>63</sup> - 1} instead of {-2<sup>63</sup>, ...,
+	2<sup>64</sup> - 1}.</dd>
+      <dt>&sect; 2.9</dt>
+      <dd>In the entry for <code>utf16-&gt;string</code>
+	<code>utf32-&gt;string</code>, the argument
+	<var>endianness-mandatory</var> should be spelled
+	<var>endianness-mandatory?</var>.
+      </dd>
+      <dd>The sentence in the specification of <code>utf16-&gt;string</code>
+	<p>"<var>Bytevector</var> is decoded according to UTF-16BE or
+	UTF-16LE:"</p>
+	should be replaced by
+	<p>"<var>Bytevector</var> is decoded according
+	  to UTF-16, UTF-16BE, UTF-16LE, or a fourth encoding scheme that differs from
+	  all three of those as follows:"</p>
+      <dd>The sentence in the specification of <code>utf32-&gt;string</code>
+	<p>"<var>Bytevector</var> is decoded according to UTF-32BE or
+	  UTF-32LE:"</p>
+	should be replaced by
+	<p>"<var>Bytevector</var> is decoded according
+	  to UTF-32, UTF-32BE, UTF-32LE, or a fourth encoding scheme that differs from
+	  all three of those as follows:"</p>
+      <dd>
+      <dt>&sect; 3</dt>
+      <dd>The example
+	<pre>(for-all even? '(3 1 4 1 5 9 . 2)) =&gt; #f</pre>
+	should be removed, as this call to <code>for-all</code> may
+	raise an exception.
+      </dd>
+      <dt>&sect; 4</dt>
+      <dd>The example for the call to <code>vector-sort!</code> is
+      incorrect; it should be:
+	<pre>(define v (vector 3 5 2 1))
+(vector-sort! &lt; v) => <i>unspecified</i>
+v => #(1 2 3 5)</pre>
+      </dd>
+      <dt>&sect; 6.1</dt>
+      <dd>
+	The sentence
+	<p>
+	  "Each call to a record constructor returns a new record with a fresh
+	  location [...]"
+	</p>
+	should be replaced by:
+	<p>
+	  "Each call to a record constructor of a mutable record type
+	  returns a new record with a fresh location [...]"
+	</p>
+	The sentence
+	<p>
+	  If <var>obj<sub>1</sub></var> and <var>obj<sub>2</sub></var>
+	  are both records of the same record type, and are the
+	  results of two separate calls to record constructors,
+	  then <code>eqv</code>? returns
+	  <code>#f</code>.
+	</p>
+	should be replaced by:
+	<p>
+	  If <var>obj<sub>1</sub></var> and <var>obj<sub>2</sub></var>
+	  are both records of the same mutable record type, and are the
+	  results of two separate calls to record constructors,
+	  then <code>eqv</code>? returns
+	  <code>#f</code>.
+	</p>
+      </dd>
+      <dt>&sect; 6.2</dt>
+      <dd>In the <code>parent-rtd</code> clause, analogously to
+      <code>make-record-constructor-descriptor</code>,
+	either &lt;parent rtd&gt; or &lt;parent cd&gt; can evaluate to
+	<code>#f</code>, according to rules analogous to those for
+	<code>make-record-constructor-descriptor</code>.
+      </dd>
+
+      <dt>&sect; 6.3</dt>
+      <dd>The sentence
+	<p>"If <var>rtd</var> is a base record type and
+	<var>protocol</var> is a procedure,
+	<var>parent-constructor-descriptor</var> must be
+	<code>#f</code>." 
+	</p>
+	should be replaced by:
+	<p>"If <var>rtd</var> is a base record type
+	<var>parent-constructor-descriptor</var> must be
+	<code>#f</code>."</p>
+	</dd>
+      <dd>
+	The sentence:
+	<p>"If <var>rtd</var> is an extension of another record type, and
+<var>parent-constructor-descriptor</var> or the <var>protocol</var> of
+	  <var>parent-constructor-descriptor</var> is <code>#f</code>,
+	  <var>protocol</var> must lso be <code>#f</code>, and a
+	  default constructor descriptor as described above is also
+	  assumed."</p>
+	should be replaced by:
+	<p>"If <var>rtd</var> is an extension of another record type and
+	  <var>parent-constructor-descriptor</var> is <code>#f</code>,
+	  <var>parent-constructor-descriptor</var> is treated as if it were a
+	  constructor descriptor for the parent rtd of <var>rtd</var> with a
+	  default protocol."</p>
+	</dd>
+      <dd>The examples for calls to <code>make-point/abs</code> and an
+	example for <code>cpoint-rgb</code> are
+      missing trailing parentheses, and should go like this:
+	<pre>(point-x (make-point/abs -1 -2)) =&gt; 1
+(point-y (make-point/abs -1 -2)) =&gt; 2
+...
+(cpoint-rgb (make-cpoint -1 -3 'red)) =&gt; (rgb . red)</pre>
+      <dt>&sect; 7.1</dt>
+      <dd>The sentence
+	<p>"If every
+	  &lt;cond clause&gt;'s &lt;test&gt; evaluates to <code>#f</code> and there
+	  is no <code>else</code> clause, then
+	  <code>raise</code> is re-invoked on the raised object
+	  [...]"</p>
+	should be replaced by
+	<p>"If every
+	  &lt;cond clause&gt;'s &lt;test&gt; evaluates to <code>#f</code> and there
+	  is no <code>else</code> clause, then
+	  <code>raise-continuable</code> is invoked on the raised object
+	  [...]"</p>
+      </dd>
+      <dd>The second example for <code>raise</code> is missing a parenthesis
+	after <code>make-violation</code>and should go like this:
+	<pre>(guard (con
+         ((error? con)
+          (if (message-condition? con)
+              (display (condition-message con))
+              (display "an error has occurred"))
+          'error))
+  (raise
+    (condition
+      (make-violation)
+      (make-message-condition "I am an error"))))
+  =&gt; &amp;violation <i>exception</i>
+</pre>
+      <dt>&sect; 7.2.1</dt>
+      <dd>The examples for <code>cond1-x</code> <code>cond2-y</code>
+      are lacking trailing parentheses and should go like this:
+	<pre>(cond1-x (condition foo bar)) =&gt; foo
+(cond2-y (condition foo bar)) =&gt; bar</pre>
+      <dt>&sect; 8.1</dt>
+      <dd>The argument <var>port</var> in the template for
+        <code>make-i/o-port-error</code> inappropraitely implies
+        that the argument must be a port, in conflict with the
+        description.  The three occurrences of <var>port</var> in the
+        description should be replaced with <var>pobj</var>.
+      <dt>&sect; 8.2.4</dt>
+      <dd>The occurrences of <var>port</var> in the templates for
+        <code>make-i/o-decoding-error</code> and
+        <code>make-i/o-encoding-error</code> should be replaced
+        with <var>pobj</var>, and the occurrences of <var>char</var>
+        in the description of <code>make-i/o-encoding-error</code>
+        should be replaced with <code>cobj</code>.  The description
+        of <code>make-i/o-encoding-error</code> should say that
+        <var>cobj</var> should be the character that could not be
+        encoded.</dd>
+      <dt>&sect; 8.2.7</dt> 
+      <dd>The following note should be added to the description of
+          <code>make-custom-textual-input-port</code>:
+        ``Even when the <var>get-position</var> procedure is supplied, the
+        <code>port-position</code> procedure cannot generally return a precise
+        value for a custom textual input port if data has been
+        read from the port.''
+      </dd>
+      <dt>&sect; 8.2.10</dt>
+      <dd>In the description of
+	<code>make-custom-binary-output-port</code>, the sentence
+	<p>"If <var>count</var> is 0, the <var>write!</var> procedure
+	should have the effect of passing an end-of-file object to the
+	byte sink."</p>
+	should be deleted (it was left over from an earlier
+	revision).  The corresponding sentence in the description of
+	<code>make-custom-textual-output-port</code> should also be
+	deleted.
+      <dt>&sect; 8.2.13</dt>
+      <dd>The following note should be added to the description of
+          <code>make-custom-binary-input/output-port</code>:
+          ``Unless both <var>get-position</var> and <var>set-position!</var> procedures are
+          supplied, a put operation cannot precisely position the port for output
+          to a custom binary input/output port after data has been read from
+          the port.''
+      </dd>
+      <dd>The following note should be added to the description of
+          <code>make-custom-textual-input/output-port</code>:
+          ``Even when both <var>get-position</var> and <var>set-position!</var> procedures are
+          supplied, the <code>port-position</code> procedure cannot generally return a
+          precise value for a custom textual input/output port, and a put operation
+          cannot precisely position the port for output, after data has
+          been read from the port.''
+      </dd>
+      <dt>&sect; 11.2</dt>
+      <dd>In the entry for <code>fx-</code>, the exception mentioned
+	should have condition type
+	<code>&amp;implementation-restriction</code> (as explained in
+	the introduction of that section), not
+	<code>&amp;assertion</code>.
+      </dd>
+      <dd>The specification of <code>fxcopy-bit-field</code> should be
+	clarified to say <p>"the bits in
+	<var>fx<sub>4</sub></var> from position 0 (inclusive) to position
+	<var>fx<sub>3</sub></var> - <var>fx<sub>2</sub></var>
+	(exclusive)"</p> instead of just <p>"the corresponding bits in
+	<var>fx<sub>4</sub></var>".</p></dd>
+      <dd>The code illustrating the computation performed by
+      <code>fxcopy-bit-field</code> should be replaced by the
+      following:
+	<pre>(let* ((n     <var>fx<sub>1</sub></var>)
+       (start <var>fx<sub>2</sub></var>)
+       (end   <var>fx<sub>3</sub></var>)
+       (from  <var>fx<sub>4</sub></var>)
+       (mask1 (fxarithmetic-shift-left -1 start))
+       (mask2 (fxnot
+               (fxarithmetic-shift-left -1 end)))
+       (mask (fxand mask1 mask2))
+       (mask3 (fxnot (fxarithmetic-shift-left
+                       -1 (- end start)))))
+  (fxif mask
+        (fxarithmetic-shift-left (fxand from mask3)
+                                 start)
+        to))</pre>
+      </dd>
+      <dd>In the code specifying the computation for
+      <code>fxbit-count</code>, "<var>ei</var>" should be "<var>fx</var>".</dd>
+      <dd>In the specification of <code>fxbit-set?</code>,
+	the sentence
+	<p>"<var>Fx<sub>2</sub></var> must be non-negative
+	  and less than <code>(fixnum-width)</code>."</p>
+	should be replaced by
+	<p>"<var>Fx<sub>2</sub></var> must be non-negative."</p>
+	Also, the code describing its computation should be changed
+	to:
+	<pre>(if (fx>=? <var>fx<sub>2</sub></var> (fx- (fixnum-width) 1))
+    (fxnegative? <var>fx<sub>1</sub></var>)
+    (not
+      (fxzero?
+         (fxand <var>fx<sub>1</sub></var>
+                (fxarithmetic-shift-left 1 <var>fx<sub>2</sub></var>)))))</pre>
+
+      <dd>In the specification of <code>fxcopy-bit</code>, the
+      sentence
+	<p>
+"<var>Fx<sub>2</sub></var> must be non-negative
+	  and less than <code>(fixnum-width)</code>."</p>
+	should be replaced by
+	<p>"<var>Fx<sub>2</sub></var> must be non-negative and less
+	than <var>w</var> - 1."</p>
+      <dd>
+	In the entry for <code>fxrotate-bit-field</code>, the
+	sentence
+	<p>"<var>Fx<sub>4</sub></var> must be less than the difference
+between <var>fx<sub>3</sub></var> and <var>fx<sub>2</sub></var>."</p>
+	should be changed to:
+	<p>"<var>Fx<sub>4</sub></var> must be less than or equal to the difference
+between <var>fx<sub>3</sub></var> and <var>fx<sub>2</sub></var>."</p>
+      <dd>
+	The code used to illustrate the computation performed by
+	<code>fxrotate-bit-field</code>
+	should be changed to:
+	<pre>(let* ((n     <var>fx<sub>1</sub></var>)
+       (start <var>fx<sub>2</sub></var>)
+       (end   <var>fx<sub>3</sub></var>)
+       (count <var>fx<sub>4</sub></var>)
+       (width (fx- end start)))
+  (fxcopy-bit-field n start end
+    (fxior
+      (fxarithmetic-shift-left
+        (fxbit-field n start (fx- end count)) count)
+      (fxarithmetic-shift-right
+        (fxbit-field n start end) (fx- width count))))))</pre>
+      </dd>
+      <dt>&sect; 11.3</dt>
+      <dd>The examples for <code>fl=?</code> etc. lack the trailing
+	<code>?</code> in their names.</dd>
+      <dd>In the description of <code>fldiv</code> etc, the wording:
+
+	<p>"For zero divisors, these procedures may return a NaN or
+	some unspecified flonum."</p>
+
+	should be replaced by <p>"In the cases where the mathematical
+	requirements in section
+	11.7.3 cannot be satisfied by any number object, either an
+	exception is raised with condition type
+	<code>&amp;implementation-restriction</code>, or unspecified flonums (one
+	for for <code>fldiv</code> <code>flmod</code>, <code>fldiv0</code> and <code>
+	flmod0</code>, two for <code>fldiv-and-mod</code> and <code>
+	fldiv0-and-mod0</code>) are
+	  returned."</p>
+      </dd>
+
+      <dd>In the description of <code>flexpt</code>, the sentence
+	<p>"If <var>fl<sub>1</sub></var> is zero, then the result is
+	  zero."
+	  </p>
+	should be replaced by: <p>"If <var>fl<sub>1</sub></var> and
+	<var>fl<sub>2</sub></var> are both zero, the result is
+1.0.  If <var>fl<sub>1</sub></var> is zero and <var>fl<sub>2</sub></var> is positive, the result is zero. 
+If <var>fl<sub>1</sub></var> is zero and <var>fl<sub>2</sub></var> is negative, the result may be a NaN, or may be
+some unspecified flonum."</p>
+      </dd>
+      
+
+      <dd>The <code>make-no-infinities-violation</code> and
+      <code>make-no-nans-violation</code> procedures take no
+      arguments.</dd>
+      
+      <dt>&sect; 11.4</dt>
+      <dd>In the specification of <code>bitwise-copy-bit</code>,
+	<p>"[...] by the <var>ei<sub>2</sub></var> bit of
+	<var>ei<sub>3</sub></var>"</p>
+	should be replaced by
+	<p>"[...] by <var>ei<sub>3</sub></var>"</p>
+      </dd>
+      <dd>In the specification of <code>bitwise-copy-bit-field</code>,
+	<p>"... fixnum result of the following computation:"</p>
+      should be replaced by
+	<p>"... result of the following computation:"</p>
+      </dd>
+      <dd>The specification of <code>bitwise-copy-bit-field</code> should be
+	clarified to say <p>"the bits in
+	<var>ei<sub>4</sub></var> from position 0 (inclusive) to position
+	<var>ei<sub>3</sub></var> - <var>ei<sub>2</sub></var>
+	(exclusive)"</p> instead of just <p>"the corresponding bits in
+	<var>ei<sub>4</sub></var>".</p></dd>
+      <dt>&sect; 12.1</dt>
+      <dd>The remark "An algebra that defines how marks and substitutions work more
+	precisely is given in section~2.4 of Oscar Waddell's PhD
+	thesis." is somewhat misleading and should be qualified as
+	follows:
+
+	<p>"Note, however, that Waddell's
+	  thesis describes slightly different semantics for 
+	  <code>bound-identifier=?</code> - it specifies that for two identifiers to be
+	  equal in the sense of <code>bound-identifier=?</code>, they must have the same marks and be equal in
+	  the sense of <code>free-identifier=?</code>, whereas this report requires
+	  instead that they must have the same marks and have the same name."</p>
+      </dd>
+      <dt>&sect; 12.4</dt>
+      <dd>The last example in this section:
+	<pre>p =&gt; (15 5)</pre>
+	should be:
+	<pre>p =&gt; (15 . 5)</pre>
+      <dt>&sect; 12.6</dt>
+      <dd>The example definition of the <code>include</code> macro
+      uses
+	<pre>(open-file-input-port fn)</pre>
+	to open the file, which would result in a binary input port.
+	Instead, a textual input port should be opened, for example via:
+	<pre>(open-file-input-port fn (file-options) (buffer-mode block) (native-transcoder))</pre>
+      </dd>
+      <dt>&sect; 12.8</dt>
+      <dd>The sample definition of <code>identifier-syntax</code> is
+      incorrect and should be as follows:
+	<pre>(define-syntax identifier-syntax
+  (lambda (x)
+    (syntax-case x (set!)
+      [(_ e)
+       #'(lambda (x)
+           (syntax-case x ()
+             [id (identifier? #'id) #'e]
+             [(_ x (... ...)) #'(e x (... ...))]))]
+      [(_ (id exp1) ((set! var val) exp2))
+       (and (identifier? #'id) (identifier? #'var))
+       #'(make-variable-transformer
+          (lambda (x)
+            (syntax-case x (set!)
+              [(set! var val) #'exp2]
+              [(id x (... ...)) #'(exp1 x (... ...))]
+              [id (identifier? #'id) #'exp1])))])))</pre>
+      </dd>
+      <dt>&sect; 13.2</dt>
+      <dd>The parameter to <code>hashtable?</code> should be
+	<var>obj</var> instead of <var>hashtable</var> -
+	<code>hashtable?</code> can be called with any object.</dd>
+      <dd>The description of <code>hashtable-entries</code> should
+	contain an explanatory note saying that the order of the entries
+	in the result vectors may be different from the example.
+      <dt>&sect; 14</dt>
+      <dd>The word "value" in the description of
+        <code>enum-set-indexer</code> should be replaced with "symbol"
+        to avoid implying that the procedure returned by
+        <code>enum-set-indexer</code> accepts arbitrary types of
+        values.
+      <dd>There's an extra parenthesis at the end of the code example
+	for <code>enum-set-projection</code>.</dd>
+      <dt>&sect; 16</dt>
+      <dd>The examples for <code>environment</code> both lack imports
+	of <code>(rnrs eval)</code>.</dd>
+      <dt>&sect; 16</dt>
+      <dd>The requirement that <code>eval</code> raise an exception with
+          condition type <code>&amp;assertion</code> if applied to an
+          expression containing an assignment to one of the variables in
+          the environment should be replaced with a requirement that it
+          raise an exception with condition type <code>&amp;syntax</code>
+          <!-- for consistency
+          its requirement to raise an exception
+          with condition type <code>&amp;syntax</code> for inputs that
+          are not syntactically valid and -->
+          for consistency with treatement
+          of similar situations as syntax violations in Section 7.1 of the
+          base document.
+  </dl>
+    
+  </body>
+</html>
+
